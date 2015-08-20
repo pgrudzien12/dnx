@@ -100,6 +100,10 @@ Please make sure the runtime matches a framework specified in {Project.ProjectFi
                 throw new InvalidOperationException(exceptionMsg);
             }
 
+#if DNX451
+            PackageDependencyProvider.EnableLoadingNativeLibraries(_libraryManager);
+#endif
+
             return _loadContextAccessor.Default.Load(applicationName);
         }
 

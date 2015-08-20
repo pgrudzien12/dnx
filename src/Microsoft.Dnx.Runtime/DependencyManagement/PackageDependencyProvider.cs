@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
+using System.Text;
 using Microsoft.Dnx.Runtime.Servicing;
 using NuGet;
 
@@ -235,6 +236,29 @@ namespace Microsoft.Dnx.Runtime
 
             return Path.Combine(profileDirectory, Constants.DefaultLocalRuntimeHomeDir, "packages");
         }
+
+#if DNX451
+        public static void EnableLoadingNativeLibraries(LibraryManager libraryManager)
+        {
+            if (RuntimeEnvironmentHelper.IsWindows)
+            {
+                var nativeLibPaths = new StringBuilder(";");
+                foreach (var packageDescription in libraryManager.GetLibraryDescriptions().OfType<PackageDescription>())
+                {
+                    foreach(var nativeLib in packageDescription.Target.NativeLibraries)
+                    {
+                        nativeLibPaths.Append(Path.GetDirectoryName(Path.Combine(packageDescription.Path, nativeLib.Path)));
+                    }
+                }
+
+                if (nativeLibPaths.Length > 1)
+                {
+                    var path = Environment.GetEnvironmentVariable("PATH");
+                    Environment.SetEnvironmentVariable("PATH", path + nativeLibPaths.ToString());
+                }
+            }
+        }
+#endif
 
         private static IEnumerable<IPackagePathResolver> GetCacheResolvers()
         {
