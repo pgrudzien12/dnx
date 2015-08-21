@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using Microsoft.Dnx.Runtime.Infrastructure;
 #if DNXCORE50
 using System.Runtime.Loader;
 #endif
@@ -50,6 +50,11 @@ namespace Microsoft.Dnx.Runtime.Loader
             return LoadFromStream(assembly, assemblySymbols);
         }
 
+        public virtual IntPtr LoadUnmanagedLibrary(string name)
+        {
+            return IntPtr.Zero;
+        }
+
         public static void InitializeDefaultContext(LoadContext loadContext)
         {
             AssemblyLoadContext.InitializeDefaultContext(loadContext);
@@ -80,9 +85,23 @@ namespace Microsoft.Dnx.Runtime.Loader
             return null;
         }
 
+        protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+        {
+            if (Path.GetFileNameWithoutExtension(unmanagedDllName) == "kernel32"||
+                Path.GetFileNameWithoutExtension(unmanagedDllName) == "libdl")
+            {
+                return IntPtr.Zero;
+            }
+
+            var handle = LoadUnmanagedLibrary(unmanagedDllName);
+
+            return handle != IntPtr.Zero
+                ? handle
+                : base.LoadUnmanagedDll(unmanagedDllName);
+        }
+
         public void Dispose()
         {
-
         }
     }
 #else
@@ -251,6 +270,10 @@ namespace Microsoft.Dnx.Runtime.Loader
             }
 
             return false;
+        }
+        public virtual IntPtr LoadUnmanagedLibrary(string name)
+        {
+            return IntPtr.Zero;
         }
     }
 #endif

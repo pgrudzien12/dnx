@@ -37,9 +37,13 @@ namespace Microsoft.Dnx.DesignTimeHost
             throw new NotSupportedException();
         }
 
+        public IntPtr LoadUnmanagedLibrary(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
-
         }
 
         public byte[] AssemblyBytes { get; set; }

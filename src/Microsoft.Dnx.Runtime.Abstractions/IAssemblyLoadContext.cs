@@ -30,5 +30,7 @@ namespace Microsoft.Dnx.Runtime
         /// <param name="assemblySymbols">The stream representing the symbols.</param>
         /// <returns>The loaded assembly.</returns>
         Assembly LoadStream(Stream assemblyStream, Stream assemblySymbols);
+
+        IntPtr LoadUnmanagedLibrary(string name);
     }
 }

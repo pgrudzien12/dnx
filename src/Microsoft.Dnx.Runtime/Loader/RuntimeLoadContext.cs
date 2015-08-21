@@ -28,7 +28,7 @@ namespace Microsoft.Dnx.Runtime.Loader
             }
             catch (FileNotFoundException)
             {
-                return _projectAssemblyLoader.Load(assemblyName, this) ?? 
+                return _projectAssemblyLoader.Load(assemblyName, this) ??
                        _packageAssemblyLoader.Load(assemblyName, this);
             }
         }
