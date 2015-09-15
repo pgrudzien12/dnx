@@ -204,7 +204,19 @@ exec ""{2}{3}"" --appbase ""${0}"" Microsoft.Dnx.ApplicationHost --configuration
                 rootObject = new JObject();
             }
 
-            var applicationRoot = Path.Combine(OutputPath, PublishRoot.AppRootName);
+            // Overwrite the global.json in the output path if it exists.
+            // If not, copy to the default folder.
+            var globalFiles = Directory.GetFiles(OutputPath, GlobalSettings.GlobalFileName, SearchOption.AllDirectories);
+            string applicationRoot;
+            if (globalFiles.IsEmpty())
+            {
+                applicationRoot = Path.Combine(OutputPath, AppRootName);
+            }
+            else
+            {
+                // Throw an error if there are ambiguous multiple global.json files in the output
+                applicationRoot = Path.GetDirectoryName(globalFiles.Single());
+            }
 
             // All dependency projects go to approot/src folder
             // so we remove all other useless entries that might bring in ambiguity
