@@ -16,6 +16,36 @@ namespace Microsoft.Dnx.Testing.SampleTests
     {
         [Theory]
         [MemberData(nameof(DnxSdks))]
+        public void DnuPublishConsole_GlobalInProject(DnxSdk sdk)
+        {
+            const string solutionName = "GlobalJsonInProjectDir";
+            const string projectName = "Project";
+
+            var solution = TestUtils.GetSolution<DnuPublishTests>(sdk, solutionName);
+            var projectPath = Path.Combine(solution.SourcePath, projectName);
+            var outputPath = Path.Combine(solution.RootPath, "bin", "output");
+            var expectedOutputStructure = new Dir
+            {
+                ["approot"] = new Dir
+                {
+                    [$"src/{projectName}"] = new Dir
+                    {
+                        ["project.json", "project.lock.json", "global.json"] = Dir.EmptyFile
+                    }
+                }
+            };
+
+            var result = sdk.Dnu.Publish(
+                projectPath,
+                outputPath);
+            result.EnsureSuccess();
+
+            var actualOutputStructure = new Dir(outputPath);
+            DirAssert.Equal(expectedOutputStructure, actualOutputStructure, compareContents:false);
+        }
+
+        [Theory]
+        [MemberData(nameof(DnxSdks))]
         public void DnuPublishWebApp_SubdirAsPublicDir_DirPlusFlatList(DnxSdk sdk)
         {
             const string projectName = "ProjectForTesting";
