@@ -13,7 +13,7 @@ addons:
     - libunwind8
     - libicu-dev
 before_install:
-  - [ $TRAVIS_OS_NAME == "osx" ] || brew update
-  - [ $TRAVIS_OS_NAME == "osx" ] || (brew list | grep icu4c || brew install icu4c)
+  - if [ $TRAVIS_OS_NAME == "osx" ] ; then brew update ; fi
+  - if [ $TRAVIS_OS_NAME == "osx" ] ; then (brew list | grep icu4c || brew install icu4c) ; fi
 script:
   - ./build.sh --quiet verify
