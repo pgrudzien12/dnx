@@ -10,6 +10,7 @@ addons:
     sources:
     - debian-sid
     packages:
+    - libicu-dev
     - libunwind8
 before_install:
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then brew update ; fi
