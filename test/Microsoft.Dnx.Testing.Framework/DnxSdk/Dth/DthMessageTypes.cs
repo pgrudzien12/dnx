@@ -6,5 +6,8 @@ namespace Microsoft.Dnx.Testing.Framework.DesignTimeHost
     public class DthMessageTypes
     {
         public const string ProtocolVersion = nameof(ProtocolVersion);
+        public const string Dependencies = nameof(Dependencies);
+        public const string AllDiagnostics = nameof(AllDiagnostics);
+        public const string GetDiagnostics = nameof(GetDiagnostics);
     }
 }
