@@ -4,6 +4,12 @@ env:
 os:
   - linux
   - osx
+addons:
+apt:
+  sources:
+  - debian-sid
+  packages:
+  - libunwind8
 before_install:
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then brew update ; fi
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then (brew list | grep icu4c || brew install icu4c) ; fi
