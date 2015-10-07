@@ -97,7 +97,7 @@ namespace Microsoft.Dnx.ApplicationHost.FunctionalTests
         {
             // Arrange
             var solution = TestUtils.GetSolution<AppHostTests>(sdk, "ApplicationHostTestProjects");
-            var project = solution.GetProject("SyntaxException");
+            var project = solution.GetProject("CompilationException");
 
             sdk.Dnu.Restore(solution.RootPath).EnsureSuccess();
 
