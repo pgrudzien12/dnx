@@ -1,20 +1,12 @@
 language: csharp
-sudo: true
 env:
   - MONO_THREADS_PER_CPU=50
 os:
   - linux
-  - osx
-addons:
-  apt:
-    sources:
-    - debian-sid
-    packages:
-    - libunwind8
 before_install:
   - [ $TRAVIS_OS_NAME == "osx" ] || brew update
   - [ $TRAVIS_OS_NAME == "osx" ] || (brew list | grep icu4c || brew install icu4c)
-  - [ $TRAVIS_OS_NAME != "osx" ] || sudo apt-get install libicu-dev
+  - [ $TRAVIS_OS_NAME != "osx" ] || sudo apt-get install libicu-dev libunwind8
 
 script:
   - ./build.sh --quiet verify
