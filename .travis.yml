@@ -12,5 +12,5 @@ before_install:
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then (brew list | grep icu4c || brew install icu4c) ; fi
 
 script:
-  - if [ $TRAVIS_OS_NAME != "osx" ] ; then docker run -v .:/home/dev/code glennc/dnx-build /bin/sh -c "./build.sh --quiet verify" ; fi
+  - if [ $TRAVIS_OS_NAME != "osx" ] ; then docker run -v $pwd:/home/dev/code glennc/dnx-build /bin/sh -c "./build.sh --quiet verify" ; fi
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then ./build.sh --quiet verify ; fi
