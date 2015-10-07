@@ -106,7 +106,7 @@ namespace Microsoft.Dnx.ApplicationHost.FunctionalTests
 
             // Assert
             Assert.Equal(1, result.ExitCode);
-            Assert.DoesNotContain("Exception", result.StandardOutput);
+            Assert.DoesNotContain("RoslynCompilationException:", result.StandardError);
 
             TestUtils.CleanUpTestDir<AppHostTests>(sdk);
         }
