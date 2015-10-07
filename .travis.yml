@@ -13,7 +13,7 @@ apt:
 before_install:
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then brew update ; fi
   - if [ $TRAVIS_OS_NAME == "osx" ] ; then (brew list | grep icu4c || brew install icu4c) ; fi
-  - if [ $TRAVIS_OS_NAME != "osx" ] ; then sudo apt-get install libicu-dev libunwind8 ; fi
+  - if [ $TRAVIS_OS_NAME != "osx" ] ; then sudo apt-get install libicu-dev ; fi
 
 script:
   - ./build.sh --quiet verify
