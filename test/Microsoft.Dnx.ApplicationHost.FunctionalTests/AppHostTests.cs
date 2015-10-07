@@ -93,7 +93,7 @@ namespace Microsoft.Dnx.ApplicationHost.FunctionalTests
         
         [Theory, TraceTest]
         [MemberData(nameof(DnxSdks))]
-        public void DxtSupressesRoslynExceptionStackTrace(DnxSdk sdk)
+        public void DnxSupressesRoslynExceptionStackTrace(DnxSdk sdk)
         {
             // Arrange
             var solution = TestUtils.GetSolution<AppHostTests>(sdk, "ApplicationHostTestProjects");
@@ -110,7 +110,5 @@ namespace Microsoft.Dnx.ApplicationHost.FunctionalTests
 
             TestUtils.CleanUpTestDir<AppHostTests>(sdk);
         }
-
-
     }
 }
