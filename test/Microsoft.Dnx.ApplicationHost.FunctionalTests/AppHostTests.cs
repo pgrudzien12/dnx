@@ -90,5 +90,27 @@ namespace Microsoft.Dnx.ApplicationHost.FunctionalTests
 
             TestUtils.CleanUpTestDir<AppHostTests>(sdk);
         }
+        
+        [Theory, TraceTest]
+        [MemberData(nameof(DnxSdks))]
+        public void DxtSupressesRoslynExceptionStackTrace(DnxSdk sdk)
+        {
+            // Arrange
+            var solution = TestUtils.GetSolution<AppHostTests>(sdk, "ApplicationHostTestProjects");
+            var project = solution.GetProject("SyntaxException");
+
+            sdk.Dnu.Restore(solution.RootPath).EnsureSuccess();
+
+            // Act
+            var result = sdk.Dnx.Execute(project);
+
+            // Assert
+            Assert.Equal(1, result.ExitCode);
+            Assert.DoesNotContain("Exception", result.StandardOutput);
+
+            TestUtils.CleanUpTestDir<AppHostTests>(sdk);
+        }
+
+
     }
 }
